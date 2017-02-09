@@ -1,9 +1,9 @@
-class Cat
-  attr_accessor :mood
-  attr_reader :name
+class Cat < Animal
+  DEFAULT_LIVES = 9
+  attr_reader :lives
 
-  def initialize(name, mood="nervous")
-    @name = name
-    @mood = mood
+  def initialize(name, lives=9)
+    super(name)
+    @lives = lives
   end
 end
