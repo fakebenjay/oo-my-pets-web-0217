@@ -1,81 +1,69 @@
-require 'cat.rb'
 require 'dog.rb'
+require 'cat.rb'
 require 'fish.rb'
+require 'animal.rb'
 
 class Owner
-  attr_accessor :pets, :name
   attr_reader :species
-  @@owners = []
+  attr_accessor :name, :pets
 
-  def initialize(name)
-    @pets = {fishes: [], cats: [], dogs: []}
-    self.name = name
-    @species = "human"
-    @@owners << self
-  end
+  @@all = []
 
   def self.all
-    @@owners
-  end
-
-  def self.count
-    @@owners.count
+    @@all
   end
 
   def self.reset_all
-    @@owners.clear
+    all.clear
   end
 
-  def say_species
-    return "I am a #{@species}."
+  def self.count
+    self.all.count
   end
 
-  def buy_fish(name)
-    fish = Fish.new(name)
-    @pets[:fishes] << fish
-    return fish
+  def initialize(name)
+    @name = name
+    @species = "human"
+    @pets = {
+      fishes:[],
+      cats:[],
+      dogs:[]
+    }
+    @@all << self
   end
 
-  def buy_cat(name)
-    cat = Cat.new(name)
-    @pets[:cats] << cat
-    return cat
+  def buy_fish(fish)
+    pets[:fishes] << Fish.new(fish)
   end
 
-  def buy_dog(name)
-    dog = Dog.new(name)
-    @pets[:dogs] << dog
-    return dog
+  def buy_cat(cat)
+    pets[:cats] << Cat.new(cat)
+  end
+
+  def buy_dog(dog)
+    pets[:dogs] << Dog.new(dog)
   end
 
   def walk_dogs
-    @pets[:dogs].each do |dog|
+    pets[:dogs].each do |dog|
       dog.mood = "happy"
     end
   end
 
-  def play_with_cats
-    @pets[:cats].each do |cat|
-      cat.mood = "happy"
-    end
-  end
-
-  def feed_fish
-    @pets[:fishes].each do |fish|
-      fish.mood = "happy"
-    end
-  end
-
   def sell_pets
-    @pets.each do |species, pets|
-      pets.each do |pet|
-        pet.mood = "nervous"
-      end
-      pets.clear
+    pets.values.flatten.each do |pet|
+      pet.mood = DEFAULT_STATE
     end
   end
 
-  def list_pets
-    return "I have #{@pets[:fishes].count} fish, #{@pets[:dogs].count} dog(s), and #{@pets[:cats].count} cat(s)."
+  def say_species
+    "I am a #{species}."
   end
 end
+
+#class Person
+#  def self.new(name)
+#    person = Person.allocate
+#    person.initialize(name)
+#  end
+#end
